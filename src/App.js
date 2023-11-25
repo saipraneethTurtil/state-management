@@ -1,6 +1,6 @@
 import "./App.css";
-import React,{ useState ,useReducer} from "react";
-
+import React,{ useState,useReducer} from "react";
+//useReducer
 function NameList() {
   const [list, setList] = useState(["Jack", "Jill", "John"]);
   const [name, setName] = useState(()=>'Praneeth');
