@@ -1,48 +1,79 @@
 import "./App.css";
-import React,{ useState,useReducer} from "react";
-//useReducer
-function NameList() {
-  const [list, setList] = useState(["Jack", "Jill", "John"]);
-  const [name, setName] = useState(()=>'Praneeth');
+import React, { useState, useReducer } from "react";
 
-  function addName() {
-    setList([...list, name]);
-  }
-
+function UserForm() {
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      return {
+        ...state,
+        ...action,
+      };
+    },
+    {
+      first: "",
+      last: "",
+    }
+  );
   return (
     <div>
-      <ul>
-        {list.map((name) => (
-          <li key={name}>{name}</li>
-        ))}
-      </ul>
       <input
         type="text"
-        value={name}
-        onChange={(text) => setName(text.target.value)}
+        value={state.first}
+        onChange={(e) => dispatch({ first: e.target.value })}
       />
-      <button onClick={addName}>AddName</button>
+      <input
+        type="text"
+        value={state.last}
+        onChange={(e) => dispatch({ last: e.target.value })}
+      />
+
+      <div>First Name : {state.first}</div>
+      <div>Last Name : {state.last}</div>
     </div>
   );
 }
-
-function Counter() {
-  const [count, setCount] = useState(0);
-  console.log(count);
-  function addOne() {
-    setCount((count) => count + 1);
-  }
+function NameList() {
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case "SET_NAME":
+          return { ...state, name: action.payload };
+        case "ADD_NAME":
+          return {
+            ...state,
+            names: [...state.names, state.name],
+            name: "",
+          };
+      }
+    },
+    {
+      names: [],
+      name: "",
+    }
+  );
   return (
     <div>
-      <button onClick={addOne}>Count = {count}</button>
+      <div>
+        {state.names.map((name, index) => (
+          <div key={index}>{name}</div>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={state.name}
+        onChange={(e) =>
+          dispatch({ type: "SET_NAME", payload: e.target.value })
+        }
+      />
+      <button onClick={() => dispatch({ type: "ADD_NAME" })}>Add Name</button>
+      {/* <div>Name entered is {state.name}</div> */}
     </div>
   );
 }
-
 function App() {
   return (
     <div>
-      <Counter />
+      <UserForm />
       <NameList />
     </div>
   );
