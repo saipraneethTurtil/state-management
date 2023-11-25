@@ -1,23 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React,{ useState ,useReducer} from "react";
+
+function NameList() {
+  const [list, setList] = useState(["Jack", "Jill", "John"]);
+  const [name, setName] = useState(()=>'Praneeth');
+
+  function addName() {
+    setList([...list, name]);
+  }
+
+  return (
+    <div>
+      <ul>
+        {list.map((name) => (
+          <li key={name}>{name}</li>
+        ))}
+      </ul>
+      <input
+        type="text"
+        value={name}
+        onChange={(text) => setName(text.target.value)}
+      />
+      <button onClick={addName}>AddName</button>
+    </div>
+  );
+}
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  console.log(count);
+  function addOne() {
+    setCount((count) => count + 1);
+  }
+  return (
+    <div>
+      <button onClick={addOne}>Count = {count}</button>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Counter />
+      <NameList />
     </div>
   );
 }
